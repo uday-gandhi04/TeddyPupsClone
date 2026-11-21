@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
+import TeddyRunnerMascot from './TeddyRunnerMascot';
 
 const ZONE_TARGETS = {
   hero: { x: 50, y: 76, facing: 1, bubble: '', hidden: true },
-  doors: { x: 21, y: 83, facing: 1, bubble: '', hidden: false },
+  doors: { x: 21, y: 83, facing: 1, bubble: '', hidden: true },
   'two-ways': { x: 49, y: 78, facing: 1, bubble: 'coming?', hidden: false },
   journey: { x: 55, y: 79, facing: 1, bubble: '', hidden: false },
   passport: { x: 37, y: 76, facing: 1, bubble: '', hidden: false },
@@ -145,65 +146,7 @@ export default function ScrollMascot({ journeyStep }) {
           className="scroll-mascot__body"
           style={{ transform: `scaleX(${pose.facing})` }}
         >
-          <svg viewBox="0 0 120 104" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Soft Ground Shadow */}
-            <ellipse className="mascot-shadow" cx="60" cy="96" rx="32" ry="5" fill="rgba(43,26,16,0.18)" />
-
-            {/* Wagging Pom-Pom Tail */}
-            <g className="mascot-tail">
-              <path d="M30 56 Q20 46 21 38" stroke="#2B1A10" strokeWidth="2.6" strokeLinecap="round" />
-              <circle cx="20" cy="36" r="7.5" fill="#F2BE73" stroke="#2B1A10" strokeWidth="2.5" />
-            </g>
-
-            {/* Far Legs (Back-Left & Front-Left) */}
-            <g className="mascot-leg mascot-leg--a">
-              <rect x="33" y="68" width="11" height="23" rx="5.5" fill="#D5954A" stroke="#2B1A10" strokeWidth="2.4" />
-            </g>
-            <g className="mascot-leg mascot-leg--b">
-              <rect x="65" y="68" width="11" height="23" rx="5.5" fill="#D5954A" stroke="#2B1A10" strokeWidth="2.4" />
-            </g>
-
-            {/* Fluffy Body */}
-            <g className="mascot-torso">
-              <ellipse cx="56" cy="60" rx="25" ry="18" fill="#F2BE73" stroke="#2B1A10" strokeWidth="2.6" />
-              {/* Collar with little heart tag */}
-              <path d="M62 49 Q73 54 80 48" stroke="#9E4A1B" strokeWidth="4.5" strokeLinecap="round" />
-              <circle cx="72" cy="54" r="3" fill="#FDF8EE" stroke="#2B1A10" strokeWidth="1.5" />
-
-              {/* Near Legs (Back-Right & Front-Right) */}
-              <g className="mascot-leg mascot-leg--b">
-                <rect x="42" y="70" width="11.5" height="23" rx="5.5" fill="#F2BE73" stroke="#2B1A10" strokeWidth="2.5" />
-              </g>
-              <g className="mascot-leg mascot-leg--a">
-                <rect x="58" y="70" width="11.5" height="23" rx="5.5" fill="#F2BE73" stroke="#2B1A10" strokeWidth="2.5" />
-              </g>
-
-              {/* Fluffy Teddy Head */}
-              <g className="mascot-head">
-                {/* Ears */}
-                <ellipse className="mascot-ear" cx="56" cy="38" rx="7" ry="12.5" fill="#DE9D50" stroke="#2B1A10" strokeWidth="2.4" />
-                <ellipse className="mascot-ear" cx="94" cy="38" rx="6.5" ry="12" fill="#DE9D50" stroke="#2B1A10" strokeWidth="2.4" />
-                {/* Main Head */}
-                <circle cx="75" cy="36" r="19" fill="#F2BE73" stroke="#2B1A10" strokeWidth="2.6" />
-                {/* Curly Top Poof */}
-                <circle cx="69" cy="18" r="7.5" fill="#F2BE73" stroke="#2B1A10" strokeWidth="2.3" />
-                <circle cx="80" cy="18" r="7.5" fill="#F2BE73" stroke="#2B1A10" strokeWidth="2.3" />
-                <circle cx="75" cy="23" r="11" fill="#F2BE73" />
-                {/* Eyes */}
-                <circle cx="69" cy="35" r="2.7" fill="#2B1A10" />
-                <circle cx="82" cy="35" r="2.7" fill="#2B1A10" />
-                <circle cx="70" cy="34" r="0.9" fill="#FFFFFF" />
-                <circle cx="83" cy="34" r="0.9" fill="#FFFFFF" />
-                {/* Muzzle & Smile */}
-                <ellipse cx="75.5" cy="41.5" rx="6.5" ry="4.5" fill="#FDF8EE" />
-                <ellipse cx="75.5" cy="39.8" rx="3" ry="2.1" fill="#2B1A10" />
-                <path d="M72 43.3 Q75.5 46.5 79 43.3" stroke="#2B1A10" strokeWidth="1.9" strokeLinecap="round" fill="none" />
-                {/* Rosy Cheeks */}
-                <ellipse cx="64" cy="40.5" rx="2.7" ry="1.6" fill="#E88A7A" opacity="0.75" />
-                <ellipse cx="87" cy="40.5" rx="2.7" ry="1.6" fill="#E88A7A" opacity="0.75" />
-              </g>
-            </g>
-          </svg>
+          <TeddyRunnerMascot isWalking={pose.walking} />
         </div>
       </div>
     </>

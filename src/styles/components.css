@@ -583,9 +583,16 @@
   color: var(--text-on-dark-muted);
 }
 
-.footer-copy svg {
+.footer-copy svg,
+.footer-copy img {
   width: 34px;
   height: 34px;
+  flex-shrink: 0;
+}
+
+.footer-copy img {
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .footer-tagline {

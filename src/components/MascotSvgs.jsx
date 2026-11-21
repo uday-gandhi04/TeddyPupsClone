@@ -228,3 +228,6 @@ export function WhatsAppIcon() {
     </svg>
   );
 }
+
+export { TeddyRunnerMascot } from './TeddyRunnerMascot';
+

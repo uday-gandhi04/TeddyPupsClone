@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AVAILABLE_PUPPIES, CONTACT, FAQS, HAPPY_MOMENTS } from '../data/siteData';
-import { TeddyHeroMascot, PawIcon } from '../components/MascotSvgs';
+import { TeddyHeroMascot, TeddyRunnerMascot, PawIcon } from '../components/MascotSvgs';
 import ScrollMascot from '../components/ScrollMascot';
 import ScrollReveal from '../components/ScrollReveal';
 
@@ -10,45 +10,49 @@ const HERO_LINEUP = [
     slug: 'maltipoo-max-male',
     name: 'Max',
     breed: 'Maltipoo',
-    img: '/images/hero/pup-0.webp',
+    img: '/images/hero/pup-maltipoo-l.jpg',
     alt: 'Max, male Maltipoo puppy',
     x: '9%',
     w: '8.6rem',
     peek: '0.62',
     tilt: '-5deg',
+    objectPosition: 'center 60%',
   },
   {
     slug: 'korean-teacup-maltipoo-girl',
     name: 'Korean Teacup Maltipoo',
     breed: 'Maltipoo',
-    img: '/images/hero/pup-1.jpg',
+    img: '/images/hero/pup-maltipoo-w.jpg',
     alt: 'Female Korean Teacup Maltipoo puppy',
     x: '22.5%',
     w: '10.4rem',
     peek: '0.8',
     tilt: '3deg',
+    objectPosition: 'center 50%',
   },
   {
-    slug: 'korean-teacup-poodle-girl',
-    name: 'Korean Teacup Poodle',
-    breed: 'Poodle',
-    img: '/images/hero/pup-2.jpg',
-    alt: 'Female Korean Teacup Poodle puppy',
+    slug: 'shih-tzu-boy-2m',
+    name: 'Shih Tzu',
+    breed: 'Shih Tzu',
+    img: '/images/hero/pup-shih-cr.jpg',
+    alt: 'Male Shih Tzu puppy',
     x: '35%',
     w: '9.2rem',
     peek: '0.7',
     tilt: '-2deg',
+    objectPosition: 'center 45%',
   },
   {
-    slug: 'cavapoo-copper-male',
-    name: 'Maltipoo & Cavapoo',
-    breed: 'Cavapoo',
-    img: '/images/hero/pup-3.jpg',
-    alt: 'Male Maltipoo & Cavapoo puppy',
+    slug: 'korean-teacup-poodle-girl',
+    name: 'Toy Poodle',
+    breed: 'Poodle',
+    img: '/images/hero/pup-0.webp',
+    alt: 'Toy Poodle puppy',
     x: '65%',
     w: '9.4rem',
     peek: '0.74',
     tilt: '3deg',
+    objectPosition: 'center 45%',
   },
   {
     slug: 'pomeranian-girl-3m',
@@ -61,25 +65,29 @@ const HERO_LINEUP = [
     peek: '0.82',
     tilt: '-3deg',
     tag: 'Pomeranian',
+    objectPosition: 'center 40%',
   },
   {
     slug: 'shih-tzu-girl-2m',
     name: 'Shih Tzu',
     breed: 'Shih Tzu',
-    img: '/images/hero/pup-5.jpg',
-    alt: 'Female Maltipoo puppy',
+    img: '/images/hero/pup-shih-q.jpg',
+    alt: 'Female Shih Tzu puppy',
     x: '91%',
     w: '8.4rem',
     peek: '0.6',
     tilt: '4deg',
+    objectPosition: 'center 38%',
   },
 ];
 
-const DOOR_PALETTES = [
-  'door-leaf--terracotta',
-  'door-leaf--espresso',
-  'door-leaf--honey',
-  'door-leaf--rosewood',
+const DOOR_COLORS = [
+  '#a24a1a',
+  '#5a3a28',
+  '#d4893f',
+  '#b8644a',
+  '#623c27',
+  '#d28b3e',
 ];
 
 export default function HomePage({ onOpenPolaroid }) {
@@ -89,8 +97,18 @@ export default function HomePage({ onOpenPolaroid }) {
   const cabinRef = useRef(null);
 
   const [openDoors, setOpenDoors] = useState(() => new Set([0, 1]));
+  const [doorsWalking, setDoorsWalking] = useState(false);
+  const doorsWalkTimeoutRef = useRef(null);
   const [journeyStep, setJourneyStep] = useState(1);
   const [cabinOpen, setCabinOpen] = useState(false);
+
+  const triggerDoorsWalk = () => {
+    setDoorsWalking(true);
+    clearTimeout(doorsWalkTimeoutRef.current);
+    doorsWalkTimeoutRef.current = setTimeout(() => {
+      setDoorsWalking(false);
+    }, 240);
+  };
 
   // Scroll-pinned horizontal 15-door showcase + scroll-linked WhatsApp Journey
   useEffect(() => {
@@ -104,6 +122,10 @@ export default function HomePage({ onOpenPolaroid }) {
 
         const maxRailScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
         rail.scrollLeft = progress * maxRailScroll;
+
+        if (rect.top <= 20 && rect.bottom >= 0) {
+          triggerDoorsWalk();
+        }
 
         const openUpTo = Math.floor(progress * (AVAILABLE_PUPPIES.length + 1)) + 1;
         const nextOpen = new Set();
@@ -149,6 +171,7 @@ export default function HomePage({ onOpenPolaroid }) {
   }, []);
 
   const handleManualRailScroll = () => {
+    triggerDoorsWalk();
     const rail = railRef.current;
     if (!rail || window.innerWidth > 900) return;
     const maxScroll = Math.max(1, rail.scrollWidth - rail.clientWidth);
@@ -237,7 +260,11 @@ export default function HomePage({ onOpenPolaroid }) {
                   aria-label={`Meet ${pup.name}, ${pup.breed}`}
                 >
                   <span className="tp-lineup__photo">
-                    <img src={pup.img} alt={pup.alt} />
+                    <img
+                      src={pup.img}
+                      alt={pup.alt}
+                      style={{ objectPosition: pup.objectPosition || 'center' }}
+                    />
                   </span>
                 </Link>
               </li>
@@ -272,60 +299,72 @@ export default function HomePage({ onOpenPolaroid }) {
       </section>
 
       {/* 2. MEET THE PUPS — FULL-BLEED SCROLL-PINNED 15-DOOR SHOWCASE */}
-      <section className="doors-pin-wrapper" ref={doorsPinRef} data-mascot-zone="doors">
-        <div className="doors-pin-sticky">
-          <div className="container doors-v2__header">
+      <section className="doors-pin-wrapper tp-meet" ref={doorsPinRef} data-pinned="true" data-mascot-zone="doors">
+        <div className="doors-pin-sticky tp-meet__stage">
+          <header className="container tp-meet__head">
             <div>
-              <h2>Meet the pups</h2>
-              <p>Real puppies, real photos, looking for their families right now.</p>
+              <h2 className="tp-meet__title">Meet the pups</h2>
+              <p className="tp-meet__subtitle">Real puppies, real photos, looking for their families right now.</p>
             </div>
-            <Link to="/puppies" className="btn btn--primary">See all available puppies</Link>
-          </div>
+            <Link to="/puppies" className="btn btn--primary tp-meet__btn">See all available puppies</Link>
+          </header>
 
-          <div className="doors-v2__stage">
-            <div
-              className="doors-v2__rail"
+          <div className="doors-v2__stage tp-meet__hall">
+            <ol
+              className="doors-v2__rail tp-meet__track"
               ref={railRef}
               onScroll={handleManualRailScroll}
               aria-label="15 available puppy doors"
             >
-              {AVAILABLE_PUPPIES.map((pup, idx) => (
-                <article
-                  key={pup.slug}
-                  className={`door-v2-card${openDoors.has(idx) ? ' is-open' : ''}`}
-                >
-                  <Link to={`/puppies/${pup.slug}`}>
-                    <div className="door-header-top">
-                      <h3>{pup.name}</h3>
-                      <p>
-                        {pup.breed}, {pup.genderLabel.toLowerCase()}, {pup.age}
-                        {pup.hasVideo ? ', with video' : ''}
-                      </p>
-                    </div>
-                    <div className="door-v2-frame">
-                      <div className="door-inside">
-                        <img src={pup.images[0]} alt={`${pup.name} — ${pup.breed}`} loading="lazy" />
-                      </div>
-                      <div className={`door-leaf ${DOOR_PALETTES[idx % DOOR_PALETTES.length]}`}>
-                        <span className="door-knob" />
-                      </div>
-                      <span className="door-sticker">Available</span>
-                    </div>
-                  </Link>
-                </article>
-              ))}
+              {AVAILABLE_PUPPIES.map((pup, idx) => {
+                const doorColor = DOOR_COLORS[idx % DOOR_COLORS.length];
+                return (
+                  <li
+                    key={pup.slug}
+                    className={`tp-door${openDoors.has(idx) ? ' is-open' : ''}`}
+                    data-open={openDoors.has(idx) ? 'true' : 'false'}
+                  >
+                    <Link to={`/puppies/${pup.slug}`} className="tp-door__link" style={{ '--door': doorColor }}>
+                      <span className="tp-door__plate">
+                        <span className="tp-door__name">{pup.name}</span>
+                        <span className="tp-door__meta">
+                          {pup.metaText || `${pup.breed}, ${pup.genderLabel.toLowerCase()}, ${pup.age}${pup.hasVideo ? ', with video' : ''}`}
+                        </span>
+                      </span>
+                      <span className="tp-door__frame">
+                        <span className="tp-door__room">
+                          <img src={pup.images[0]} alt={`${pup.name} — ${pup.breed}`} loading="lazy" />
+                        </span>
+                        <span aria-hidden="true" className="tp-door__way">
+                          <span className="tp-door__leaf">
+                            <span className="tp-door__knob" />
+                          </span>
+                        </span>
+                        <span className="tp-door__tag">Available</span>
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
 
-              <Link to="/puppies" className="door-v2-end">
-                <div style={{ color: 'var(--accent-terracotta)', transform: 'scale(1.5)' }}>
-                  <PawIcon />
-                </div>
-                <h3 className="font-display" style={{ fontSize: '1.3rem' }}>Meet them all</h3>
-              </Link>
-            </div>
+              <li className="tp-door tp-door--all">
+                <Link to="/puppies" className="tp-door__link">
+                  <span className="tp-door__frame tp-door__frame--all">
+                    <div style={{ color: 'var(--accent-terracotta)', transform: 'scale(1.4)' }}>
+                      <PawIcon />
+                    </div>
+                    <span className="tp-door__all">Meet them all</span>
+                  </span>
+                </Link>
+              </li>
+            </ol>
 
             {/* Full-Bleed Wooden Plank Floor */}
-            <div className="doors-v2__floor" aria-hidden="true">
-              <div className="doors-v2__floor-molding" />
+            <div className="tp-meet__floor" aria-hidden="true" />
+
+            {/* Mascot Dog Scroller Illustration */}
+            <div className="tp-meet__teddy" aria-hidden="true">
+              <TeddyRunnerMascot isWalking={doorsWalking} />
             </div>
           </div>
         </div>
