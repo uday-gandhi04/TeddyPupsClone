@@ -319,77 +319,125 @@
 
 /* Section 3: Two Ways to Meet Your Puppy */
 .two-ways-section {
-  padding: 90px 0;
-  background-color: var(--bg-cream);
+  position: relative;
+  padding: 56px 0 42px;
+  min-height: 820px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #F9D995 0%, #F8DDAA 56%, #F6D394 100%);
 }
 
-.two-ways-heading {
+.two-ways-container {
+  position: relative;
+  max-width: 1320px;
+}
+
+.two-ways-title {
+  position: relative;
+  z-index: 3;
+  max-width: 900px;
+  margin: 0 auto 24px;
+  color: var(--ink);
   text-align: center;
-  max-width: 640px;
-  margin: 0 auto 48px;
+  font-size: clamp(3rem, 6vw, 5.25rem);
+  line-height: 0.96;
 }
 
-.two-ways-heading h2 {
-  font-size: clamp(2rem, 4.2vw, 3rem);
+.way-card h3 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.two-ways-signpost {
+  position: absolute;
+  z-index: 2;
+  top: 204px;
+  left: 50%;
+  width: min(620px, 48vw);
+  height: min(540px, 42vw);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.two-ways-signpost svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .two-ways-grid {
   display: grid;
-  grid-template-columns: 1fr 120px 1fr;
-  gap: 24px;
+  position: relative;
+  z-index: 1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(56px, 10vw, 140px);
+  padding-top: 170px;
   align-items: stretch;
 }
 
 .way-card {
-  background: var(--bg-paper);
-  border: var(--border-ink);
-  border-radius: 26px;
-  padding: 32px 28px;
-  box-shadow: var(--shadow-sticker-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-}
-
-.way-card--local {
-  background: linear-gradient(180deg, #FFFDF8 0%, #FBEBD2 100%);
-}
-
-.way-card--import {
-  background: linear-gradient(180deg, #FFFDF8 0%, #F3E5D0 100%);
+  min-width: 0;
 }
 
 .way-visual {
   width: 100%;
-  max-width: 310px;
-  margin-bottom: 22px;
+  max-width: 520px;
+  height: 270px;
+  margin-bottom: 12px;
   position: relative;
+}
+
+.showroom-scene {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 6px 0 0 clamp(24px, 4vw, 54px);
+}
+
+.showroom-skyline {
+  position: absolute;
+  z-index: 0;
+  inset: auto 0 0;
+  width: 100%;
+  height: 190px;
 }
 
 .awning-frame {
-  border: var(--border-ink);
-  border-radius: 18px;
-  overflow: hidden;
-  background: #FFFFFF;
-  box-shadow: var(--shadow-sticker-sm);
+  position: relative;
+  z-index: 1;
+  width: 190px;
 }
 
 .awning-stripes {
-  height: 28px;
+  height: 25px;
   background: repeating-linear-gradient(
     90deg,
     var(--accent-terracotta) 0px,
-    var(--accent-terracotta) 22px,
-    #FDF8EE 22px,
-    #FDF8EE 44px
+    var(--accent-terracotta) 18px,
+    #FDF8EE 18px,
+    #FDF8EE 36px
   );
-  border-bottom: 2px solid var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 8px 8px 0 0;
 }
 
 .awning-photo {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 0.88;
   position: relative;
+  overflow: hidden;
+  border: 3px solid var(--ink);
+  border-top: 0;
+  border-radius: 0 0 9px 9px;
 }
 
 .awning-photo img {
@@ -399,87 +447,29 @@
 }
 
 .awning-tag {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--bg-cream);
-  border: 1.5px solid var(--ink);
-  border-radius: 999px;
-  padding: 3px 12px;
+  display: block;
+  margin-top: 3px;
+  color: var(--ink);
   font-family: var(--font-hand);
-  font-size: 1rem;
+  font-size: 1.12rem;
   white-space: nowrap;
 }
 
 .flight-card {
-  padding: 18px;
-  border-radius: 18px;
-  border: var(--border-ink);
-  background: #EAF4F8;
-  box-shadow: var(--shadow-sticker-sm);
+  width: 100%;
+  height: 100%;
 }
 
 .flight-route {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-family: var(--font-hand);
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 10px;
-}
-
-.flight-dots {
-  flex: 1;
-  border-top: 2px dashed var(--accent-terracotta);
-  margin: 0 10px;
-}
-
-.airplane-window {
-  width: 112px;
-  height: 112px;
-  margin: 6px auto;
-  border-radius: 50%;
-  border: 4px solid var(--ink);
-  overflow: hidden;
-  box-shadow: 0 4px 0 var(--ink);
-}
-
-.airplane-window img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-}
-
-.way-card h3 {
-  font-size: 1.65rem;
-  margin-bottom: 10px;
+  overflow: visible;
 }
 
 .way-card p {
   color: var(--text-secondary);
-  margin-bottom: 22px;
-  max-width: 340px;
-}
-
-.signpost-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.signpost-bubble {
-  background: #FFFFFF;
-  border: var(--border-ink-thin);
-  border-radius: 14px;
-  padding: 4px 12px;
-  font-family: var(--font-hand);
-  font-size: 1.15rem;
-  box-shadow: 0 2px 0 var(--ink);
+  max-width: 440px;
+  margin-bottom: 20px;
 }
 
 /* Section 4: Your Puppy Journey (Scroll-Linked Chat Mockup) */
@@ -1662,10 +1652,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
   .two-ways-grid {
-    grid-template-columns: 1fr;
-  }
-  .signpost-col {
-    flex-direction: row;
+    gap: clamp(32px, 6vw, 72px);
   }
   .passport-book, .journey-grid, .families-wall-header, .faq-preview-grid, .final-cta-grid, .detail-hero-grid, .faq-layout, .contact-grid {
     grid-template-columns: 1fr;
@@ -1682,6 +1669,28 @@
 @media (max-width: 680px) {
   .puppies-grid, .polaroid-grid, .tickets-grid, .steps-4-grid, .checklist-grid, .timeline-grid, .passport-stamps, .corkboard, .form-grid-2, .profile-facts {
     grid-template-columns: 1fr;
+  }
+  .two-ways-section {
+    padding-top: 56px;
+    min-height: 0;
+  }
+  .two-ways-title {
+    font-size: clamp(2.55rem, 9.5vw, 3.4rem);
+    margin-bottom: 20px;
+  }
+  .two-ways-signpost {
+    top: 190px;
+    width: 100%;
+    height: 190px;
+    overflow: hidden;
+  }
+  .two-ways-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding-top: 140px;
+  }
+  .way-visual {
+    height: 250px;
   }
   .hero {
     padding-top: 48px;

@@ -93,6 +93,7 @@ const DOOR_COLORS = [
 export default function HomePage({ onOpenPolaroid }) {
   const doorsPinRef = useRef(null);
   const railRef = useRef(null);
+  const flightRouteRef = useRef(null);
   const journeyRef = useRef(null);
   const cabinRef = useRef(null);
 
@@ -115,6 +116,19 @@ export default function HomePage({ onOpenPolaroid }) {
     const onScroll = () => {
       const pinWrap = doorsPinRef.current;
       const rail = railRef.current;
+      const flightRoute = flightRouteRef.current;
+      if (flightRoute) {
+        const svgRect = flightRoute.getBoundingClientRect();
+        const viewH = window.innerHeight;
+        const progress = Math.min(1, Math.max(0, (viewH - svgRect.top) / (viewH + svgRect.height)));
+
+        if (!flightRoute.dataset.scrollControlled) {
+          flightRoute.pauseAnimations();
+          flightRoute.dataset.scrollControlled = 'true';
+        }
+        flightRoute.setCurrentTime(progress * 9);
+      }
+
       if (pinWrap && rail && window.innerWidth > 900) {
         const rect = pinWrap.getBoundingClientRect();
         const scrollable = Math.max(1, pinWrap.offsetHeight - window.innerHeight);
@@ -371,61 +385,73 @@ export default function HomePage({ onOpenPolaroid }) {
       </section>
 
       {/* 3. TWO WAYS TO MEET YOUR PUPPY */}
-      <section className="two-ways-section" data-mascot-zone="two-ways">
-        <div className="container">
-          <div className="two-ways-heading">
-            <span className="eyebrow eyebrow--wavy">your choice, our care</span>
-            <h2>Two ways to meet your puppy</h2>
+      <section className="two-ways-section" data-mascot-zone="two-ways" aria-labelledby="two-ways-title">
+        <div className="container two-ways-container">
+          <h2 className="two-ways-title" id="two-ways-title">Two ways to<br />meet your puppy</h2>
+
+          <div className="two-ways-signpost" aria-hidden="true">
+            <svg viewBox="0 0 620 540" preserveAspectRatio="xMidYMin slice">
+              <rect x="302" y="0" width="16" height="540" fill="#9A5226" stroke="#2B1A10" strokeWidth="3" />
+              <path d="M18 47 51 12 H302 V82 H51 Z" fill="#8C481E" opacity=".38" />
+              <path d="M318 12 H569 L602 47 569 82 H318 Z" fill="#8C481E" opacity=".38" />
+              <path d="M12 40 46 6 H302 V76 H46 Z" fill="#D9913D" stroke="#2B1A10" strokeWidth="3" />
+              <path d="M318 6 H574 L608 40 574 76 H318 Z" fill="#D9913D" stroke="#2B1A10" strokeWidth="3" />
+              <path d="M62 15 H291 M329 15 H559" stroke="#F5C174" strokeWidth="2" opacity=".65" />
+              <text x="169" y="52" textAnchor="middle" fill="#2B1A10" fontFamily="Fraunces, Georgia, serif" fontSize="27" fontWeight="800">Puppies in Dubai</text>
+              <text x="459" y="52" textAnchor="middle" fill="#2B1A10" fontFamily="Fraunces, Georgia, serif" fontSize="27" fontWeight="800">Imported for you</text>
+            </svg>
           </div>
 
           <div className="two-ways-grid">
             <ScrollReveal delay={0} variant="up">
               <article className="way-card way-card--local">
-                <div className="way-visual">
+                <h3>Puppies in Dubai</h3>
+                <div className="way-visual showroom-scene">
+                  <svg className="showroom-skyline" viewBox="0 0 540 190" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M10 178 H530 M38 178 V116 H70 V178 M91 178 V72 L100 57 V39 H108 V57 L117 72 V178 M143 178 V92 L166 109 V178 M190 178 V126 H221 V178 M239 178 V79 H263 V178 M279 178 V136 H317 V178 M352 178 V101 H378 V178 M400 178 V57 H414 V31 H423 V57 L436 72 V178 M462 178 V125 H496 V178" fill="none" stroke="#B59B6D" strokeWidth="4" strokeLinejoin="round" opacity=".68" />
+                  </svg>
                   <div className="awning-frame">
                     <div className="awning-stripes" />
                     <div className="awning-photo">
                       <img src="/images/maltipoo-apricot.jpg" alt="Puppy in our Dubai showroom" loading="lazy" />
-                      <span className="awning-tag">In our showroom</span>
                     </div>
+                    <span className="awning-tag">In our showroom</span>
                   </div>
                 </div>
-                <h3>Puppies in Dubai</h3>
                 <p>See them, love them, take them home. Come meet our locally available puppies before you decide.</p>
                 <Link to="/puppies?where=Everywhere" className="btn btn--primary">Meet local puppies</Link>
               </article>
             </ScrollReveal>
 
-            <div className="signpost-col" aria-hidden="true">
-              <svg width="86" height="170" viewBox="0 0 86 170" fill="none">
-                <rect x="39" y="10" width="9" height="154" rx="4" fill="#8C481E" stroke="#2B1A10" strokeWidth="2.4" />
-                <path d="M8 24 H68 L79 36 L68 48 H8 Z" fill="#FBEBD2" stroke="#2B1A10" strokeWidth="2.2" />
-                <path d="M78 60 H18 L7 72 L18 84 H78 Z" fill="#F3BA60" stroke="#2B1A10" strokeWidth="2.2" />
-                <text x="16" y="40" fill="#2B1A10" fontFamily="Patrick Hand, cursive" fontSize="14">Dubai</text>
-                <text x="24" y="76" fill="#2B1A10" fontFamily="Patrick Hand, cursive" fontSize="14">Korea</text>
-              </svg>
-            </div>
-
             <ScrollReveal delay={140} variant="up">
               <article className="way-card way-card--import">
-                <div className="way-visual">
+                <h3>Imported for you</h3>
+                <div className="way-visual flight-scene">
                   <div className="flight-card">
-                    <div className="flight-route">
-                      <span>Korea</span>
-                      <span className="flight-dots" />
-                      <span className="flight-plane-anim">&#9992;</span>
-                      <span className="flight-dots" />
-                      <span>Dubai</span>
-                    </div>
-                    <div className="airplane-window">
-                      <img src="/images/poodle-cream.jpg" alt="Imported Korean teacup puppy" loading="lazy" />
-                    </div>
-                    <span className="font-hand" style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>
-                      Certified breeders &middot; Stress-free arrival
-                    </span>
+                    <svg ref={flightRouteRef} className="flight-route" viewBox="0 0 460 250" role="img" aria-label="Flight route from Korea to Dubai">
+                      <defs>
+                        <clipPath id="flight-window-clip" clipPathUnits="objectBoundingBox">
+                          <circle cx="0.5" cy="0.5" r="0.5" />
+                        </clipPath>
+                      </defs>
+                      <path d="M28 202 C104 60 286 18 430 132" fill="none" stroke="#A94F1D" strokeWidth="2.5" strokeDasharray="2 9" strokeLinecap="round" />
+                      <circle cx="28" cy="202" r="6" fill="#A94F1D" />
+                      <circle cx="430" cy="132" r="6" fill="#A94F1D" />
+                      <text x="5" y="230" fill="#2B1A10" fontFamily="Patrick Hand, cursive" fontSize="18">Korea</text>
+                      <text x="408" y="160" fill="#2B1A10" fontFamily="Patrick Hand, cursive" fontSize="18">Dubai</text>
+                      <g className="flight-plane">
+                        <animateMotion dur="9s" fill="freeze" rotate="auto" path="M28 202 C104 60 286 18 430 132" />
+                        <g transform="translate(-255 -97)">
+                          <path d="M209 91 184 58 202 57 231 83 M263 85 286 49 305 48 291 91 M225 112 243 145 260 145 254 110" fill="#B75F2A" stroke="#2B1A10" strokeWidth="3" strokeLinejoin="round" />
+                          <path d="M194 99 C194 81 213 73 239 72 L277 73 C297 74 315 82 323 97 C315 112 297 120 277 121 L239 122 C213 121 194 114 194 99 Z" fill="#FFFDF8" stroke="#2B1A10" strokeWidth="3" />
+                          <circle cx="255" cy="97" r="19" fill="#FFFDF8" stroke="#2B1A10" strokeWidth="3" />
+                          <image href="/brand/logo.png" x="239" y="81" width="32" height="32" preserveAspectRatio="xMidYMid slice" clipPath="url(#flight-window-clip)" />
+                          <path d="M317 91 326 97 317 103" fill="none" stroke="#2B1A10" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </g>
+                      </g>
+                    </svg>
                   </div>
                 </div>
-                <h3>Imported for you</h3>
                 <p>
                   Exclusive Korean teacup puppies, delivered. Order from the world&apos;s most reputable
                   breeders and let us handle the import.
